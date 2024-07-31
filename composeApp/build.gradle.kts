@@ -7,7 +7,11 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
+
+
 
 kotlin {
     androidTarget {
@@ -16,6 +20,9 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
+
+
+
     
     jvm("desktop")
     
@@ -26,7 +33,9 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
         }
+
         commonMain.dependencies {
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -34,6 +43,9 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+            implementation(libs.androidx.room.runtime)
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -88,4 +100,8 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
