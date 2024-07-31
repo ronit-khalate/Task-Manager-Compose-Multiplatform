@@ -1,4 +1,4 @@
-package auth.presentation.register
+package auth.presentation.register.state
 
 data class RegisterScreenState(
     val firstName:String="",
