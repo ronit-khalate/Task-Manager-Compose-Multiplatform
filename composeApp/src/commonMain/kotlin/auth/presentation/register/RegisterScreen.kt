@@ -27,10 +27,14 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import auth.presentation.register.event.RegisterScreenEvent
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun RegistrationScreen( modifier: Modifier = Modifier) {
+
+    val viewModel:RegisterViewModel = viewModel()
 
     Column(
         modifier = Modifier
@@ -61,7 +65,7 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
 
             ) {
 
-                Spacer(Modifier.height(40.dp))
+                Spacer(Modifier.height(10.dp))
 
                 Text(
                     text = "Register",
@@ -83,9 +87,9 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
 
                 OutlinedTextField(
                     shape = RoundedCornerShape(30.dp),
-                    value = "",
+                    value = viewModel.state.firstName ,
                     singleLine = true,
-                    onValueChange = {TODO("Implement on value change")},
+                    onValueChange = {viewModel.onEvent(RegisterScreenEvent.onFirstNameEntered(it))},
                     label = { Text("First Name") }
 
                 )
@@ -94,9 +98,9 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
 
                 OutlinedTextField(
                     shape = RoundedCornerShape(30.dp),
-                    value = "",
+                    value = viewModel.state.lastName,
                     singleLine = true,
-                    onValueChange = {TODO("Implement on value change")},
+                    onValueChange = {viewModel.onEvent(RegisterScreenEvent.onLastNameEntered(it))},
                     label = { Text("Last Name") }
 
                 )
@@ -105,9 +109,9 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
 
                 OutlinedTextField(
                     shape = RoundedCornerShape(30.dp),
-                    value = "",
+                    value = viewModel.state.email,
                     singleLine = true,
-                    onValueChange = {TODO("Implement on value change")},
+                    onValueChange = {viewModel.onEvent(RegisterScreenEvent.onEmailEntered(it))},
                     label = { Text("Email") }
 
                 )
@@ -116,9 +120,9 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
 
                 OutlinedTextField(
                     shape = RoundedCornerShape(30.dp),
-                    value = "",
+                    value = viewModel.state.password,
                     singleLine = true,
-                    onValueChange = {TODO("Implement on value change")},
+                    onValueChange = {viewModel.onEvent(RegisterScreenEvent.onPasswordEntered(it))},
                     label = { Text("Password") }
 
                 )
@@ -126,9 +130,9 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
 
                 OutlinedTextField(
                     shape = RoundedCornerShape(30.dp),
-                    value = "",
+                    value = viewModel.state.confirmPassword,
                     singleLine = true,
-                    onValueChange = {TODO("Implement on value change")},
+                    onValueChange = { viewModel.onEvent(RegisterScreenEvent.onConfiremPasswordEntered(it))},
                     label = { Text("Confirm Password") }
 
                 )
@@ -140,7 +144,7 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
                         .padding(start = 40.dp, end = 40.dp)
                         .fillMaxWidth()
                         .height(40.dp),
-                    onClick ={ TODO("Implement Onclick") },
+                    onClick ={ viewModel.onEvent(RegisterScreenEvent.onRegister) },
                     shape = RoundedCornerShape(40.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
 
