@@ -44,7 +44,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-            implementation(libs.androidx.room.runtime)
+            implementation(libs.room.runtime)
+            implementation(libs.sqlite.bundled)
 
         }
         desktopMain.dependencies {
@@ -100,6 +101,10 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+dependencies{
+    ksp(libs.room.compiler)
 }
 
 room {
