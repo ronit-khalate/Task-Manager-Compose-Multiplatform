@@ -13,7 +13,7 @@ androidx-test-junit = "1.2.1"
 compose-plugin = "1.6.11"
 junit = "4.13.2"
 kotlin = "2.0.0"
-lifecycleViewmodel= "2.8.0-rc01"
+lifecycleViewmodel= "2.8.4"
 room = "2.7.0-alpha05"
 ksp = "2.0.0-1.0.23"
 sqlite = "2.5.0-alpha05"
@@ -43,8 +43,9 @@ room-compiler ={module ="androidx.room:room-compiler" , version.ref="room"}
 sqlite-bundled ={module ="androidx.sqlite:sqlite-bundled", version.ref ="sqlite"}
 
 koin-android ={module ="io.insert.koin:koin-core" , version.ref ="koin"}
-koin-androidx-compose={module="io.insert-koin:koin-androidx-compose", version.ref="koin"}
-koin-core ={module ="io.insert-koin:koin-core",version.ref="koinComposeMultiplatform"}
+koin-androidx-compose={module="io.insert-koin:koin-androidx-compose", version.ref="koinCompose"}
+koin-core ={module ="io.insert-koin:koin-core",version.ref="koin"}
+koin-compose ={module ="io.insert-koin:koin-compose", version.ref="koinComposeMultiplatform"}
 navigation-compose = {module ="org.jetbrains.androidx.navigation:navigation-compose" , version.ref="navigationCompose"}
 androidx-lifecycle-viewmodel= { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycleViewmodel" }
 

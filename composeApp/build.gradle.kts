@@ -45,12 +45,12 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodel)
 
             implementation(libs.room.runtime)
             implementation(libs.sqlite.bundled)
 
             api(libs.koin.core)
+            implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.navigation.compose)
         }
         desktopMain.dependencies {
