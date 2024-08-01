@@ -33,13 +33,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+
 import auth.presentation.register.event.RegisterScreenEvent
+import koinViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun RegistrationScreen( modifier: Modifier = Modifier) {
 
-    val viewModel:RegisterViewModel = viewModel()
+    val viewModel:RegisterViewModel = koinViewModel()
+
+
 
     Column(
         modifier = Modifier

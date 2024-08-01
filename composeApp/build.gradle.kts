@@ -52,6 +52,7 @@ kotlin {
             api(libs.koin.core)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.navigation.compose)
+            implementation(libs.koin.compose)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
