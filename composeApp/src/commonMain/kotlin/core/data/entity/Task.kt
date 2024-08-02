@@ -12,5 +12,5 @@ data class Task(
     val title:String,
     val description:String,
     val dueDate:LocalDate,
-    val status:Boolean
+    val status:Boolean=false
 )
