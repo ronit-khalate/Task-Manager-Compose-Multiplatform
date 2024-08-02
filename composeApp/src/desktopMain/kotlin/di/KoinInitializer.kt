@@ -1,3 +1,5 @@
+package di
+
 import org.koin.core.context.startKoin
 
 actual class KoinInitializer {
@@ -5,7 +7,7 @@ actual class KoinInitializer {
 
         startKoin {
 
-            modules(appModule,viewModelModule)
+            modules(appModule, viewModelModule)
         }
     }
 

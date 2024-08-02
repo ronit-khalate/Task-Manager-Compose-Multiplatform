@@ -4,12 +4,11 @@ import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import java.io.File
 
-
-fun getDatabase():Database{
+actual class Dbclient{
 
     val dbFile = File(System.getProperty("java.io.tmpdir"),"database.db")
 
-    return Room.databaseBuilder<Database>(
+    operator fun invoke():Database = Room.databaseBuilder<Database>(
         name = dbFile.absolutePath
     )
         .setDriver(BundledSQLiteDriver())

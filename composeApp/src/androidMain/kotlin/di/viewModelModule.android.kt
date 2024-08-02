@@ -1,4 +1,4 @@
-
+package di
 import auth.presentation.register.RegisterViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module

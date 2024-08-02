@@ -1,6 +1,6 @@
 package com.ronit.project
 
-import KoinInitializer
+import di.KoinInitializer
 import android.app.Application
 
 class TaskManagerApp:Application() {

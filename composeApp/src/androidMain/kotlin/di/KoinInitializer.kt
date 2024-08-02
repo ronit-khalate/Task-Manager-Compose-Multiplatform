@@ -1,3 +1,5 @@
+package di
+
 import android.content.Context
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -12,7 +14,7 @@ actual class KoinInitializer(
             androidContext(context)
             androidLogger()
 
-            modules(appModule,viewModelModule)
+            modules(appModule, viewModelModule)
 
         }
     }
