@@ -1,23 +1,25 @@
 package core.data.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import core.data.entity.Task
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 interface TaskDao {
 
     @Query("SELECT * FROM Task")
     fun getAllTask():Flow<List<Task>>
 
     @Upsert
-    fun upsertTask(task: Task)
+    suspend fun upsertTask(task: Task)
 
     @Query("SELECT * FROM Task WHERE id =:id")
-    fun getTaskById(id:Int):Task
+    suspend fun getTaskById(id:Int):Task
 
     @Delete
-    fun deleteTask(task: Task)
+    suspend fun deleteTask(task: Task)
 
 }

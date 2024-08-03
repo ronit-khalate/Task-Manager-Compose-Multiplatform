@@ -10,11 +10,11 @@ interface UserDao {
 
     // For login
     @Query("SELECT * FROM User WHERE email = :email")
-    fun gerUserByEmail(email:String): User
+    suspend fun gerUserByEmail(email:String): User?
 
     // For registering
     @Upsert
-    fun registerUser(user: User)
+    suspend fun registerUser(user: User)
 
 
 }

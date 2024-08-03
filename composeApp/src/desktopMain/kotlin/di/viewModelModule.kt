@@ -5,5 +5,7 @@ import org.koin.dsl.module
 
 actual val viewModelModule = module {
 
-    singleOf<RegisterViewModel>(::RegisterViewModel)
+    single{
+        RegisterViewModel(get())
+    }
 }

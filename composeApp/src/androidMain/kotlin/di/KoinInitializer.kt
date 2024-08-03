@@ -14,7 +14,7 @@ actual class KoinInitializer(
             androidContext(context)
             androidLogger()
 
-            modules(appModule, viewModelModule)
+            modules(appModule, viewModelModule, platFromModule)
 
         }
     }
