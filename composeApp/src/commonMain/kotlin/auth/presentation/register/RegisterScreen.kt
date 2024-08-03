@@ -2,6 +2,7 @@ package auth.presentation.register
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -83,6 +85,7 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .safeDrawingPadding()
+                    .wrapContentWidth()
                     .padding(top = 40.dp, bottom = 40.dp),
                 elevation = 20.dp,
 
@@ -190,7 +193,6 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
                     OutlinedButton(
                         modifier = Modifier
                             .padding(start = 40.dp, end = 40.dp)
-                            .fillMaxWidth()
                             .height(40.dp),
                         onClick = { viewModel.onEvent(RegisterScreenEvent.OnRegister) },
                         shape = RoundedCornerShape(40.dp),

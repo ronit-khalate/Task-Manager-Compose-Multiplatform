@@ -12,6 +12,6 @@ data class RegisterScreenState(
 
     fun isAnyPropertiesBlank():Boolean{
 
-        return this.password.isBlank() && this.firstName.isBlank() && this.lastName.isBlank() && this.password.isBlank() && this.confirmPassword.isBlank()
+        return (this.password.isBlank() || this.firstName.isBlank() || this.lastName.isBlank() || this.password.isBlank() || this.confirmPassword.isBlank())
     }
 }
