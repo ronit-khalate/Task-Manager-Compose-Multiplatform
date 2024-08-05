@@ -132,7 +132,18 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 CustomButton(
-                    onClick = {viewModel.onEvent(LoginScreenEvent.OnSignIn)},
+                    onClick = {
+                        viewModel.onEvent(
+                            LoginScreenEvent.OnSignIn(
+                                onSignInSuccess = {
+                                    navController.navigate(Screen.TaskListScreen.route)
+                                },
+                                onSignInFail = {
+                                    viewModel.onEvent(LoginScreenEvent.ShowSnackBar("Sign In Failed For Unknown Reason"))
+                                }
+                            )
+                        )
+                  },
                     buttonText = "Sign In"
                 )
                 Spacer(modifier = Modifier.height(20.dp))
