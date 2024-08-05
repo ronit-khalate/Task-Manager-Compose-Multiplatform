@@ -6,6 +6,11 @@ sealed interface LoginScreenEvent {
 
     data class OnPasswordEntered(val password: String) : LoginScreenEvent
 
-    data object OnSignIn : LoginScreenEvent
+    data class OnSignIn(
+        val onSignInSuccess:()->Unit,
+        val onSignInFail:()->Unit,
+    ): LoginScreenEvent
     data object RestSnackBarState : LoginScreenEvent
+
+    data class ShowSnackBar(val message:String):LoginScreenEvent
 }
