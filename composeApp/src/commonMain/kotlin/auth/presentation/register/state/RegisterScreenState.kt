@@ -1,8 +1,7 @@
 package auth.presentation.register.state
 
 data class RegisterScreenState(
-    val firstName:String="",
-    val lastName:String="",
+    val name:String="",
     val email:String="",
     val password:String="",
     val confirmPassword:String="",
@@ -12,6 +11,6 @@ data class RegisterScreenState(
 
     fun isAnyPropertiesBlank():Boolean{
 
-        return (this.password.isBlank() || this.firstName.isBlank() || this.lastName.isBlank() || this.password.isBlank() || this.confirmPassword.isBlank())
+        return (this.password.isBlank() || this.name.isBlank() || this.password.isBlank() || this.confirmPassword.isBlank())
     }
 }
