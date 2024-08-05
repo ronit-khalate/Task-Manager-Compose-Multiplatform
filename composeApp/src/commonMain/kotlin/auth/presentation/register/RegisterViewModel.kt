@@ -37,13 +37,10 @@ class RegisterViewModel(
     fun onEvent(event:RegisterScreenEvent){
 
         when(event){
-            is RegisterScreenEvent.OnFirstNameEntered -> {
-                state=state.copy(firstName = event.firstName)
+            is RegisterScreenEvent.OnNameEntered -> {
+                state=state.copy(name = event.name)
             }
 
-            is RegisterScreenEvent.OnLastNameEntered -> {
-                state=state.copy(lastName = event.lastName)
-            }
 
             is RegisterScreenEvent.OnEmailEntered -> {
                state= state.copy(email = event.email)
@@ -72,7 +69,7 @@ class RegisterViewModel(
 
 
 
-                val user = User(firstName = state.firstName, lastName = state.lastName, password = state.password, email = state.email)
+                val user = User(name = state.name,  password = state.password, email = state.email)
                 viewModelScope.launch(coroutineExceptionHandler){
                     registrationRepositoryImp.registerUser(user)
                 }
