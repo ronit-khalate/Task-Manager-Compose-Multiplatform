@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
 import core.data.entity.User
+import core.data.entity.UserWithTask
+import javax.annotation.processing.Generated
 
 @Dao
 interface UserDao {
@@ -15,6 +17,9 @@ interface UserDao {
     // For registering
     @Upsert
     suspend fun registerUser(user: User)
+
+    @Query("SELECT * FROM User WHERE id = :userId")
+    suspend fun getUserWithTask(userId:String):UserWithTask
 
 
 }
