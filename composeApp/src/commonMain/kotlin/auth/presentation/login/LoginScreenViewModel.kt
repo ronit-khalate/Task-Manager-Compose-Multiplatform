@@ -24,12 +24,15 @@ class LoginScreenViewModel(
         when(throwable){
 
             is LoginScreenException.UserNotFound ->{
-                state=state.copy(showSnackBar = true , snackBarMessage = throwable.message.toString())
+
+                onEvent(LoginScreenEvent.ShowSnackBar(message = throwable.message.toString()))
+
             }
 
             is LoginScreenException.InvalidEmailOrPasswordException ->{
 
-                state=state.copy(showSnackBar = true , snackBarMessage = throwable.message.toString())
+                onEvent(LoginScreenEvent.ShowSnackBar(message = throwable.message.toString()))
+
             }
         }
     }
@@ -49,14 +52,20 @@ class LoginScreenViewModel(
             is LoginScreenEvent.OnSignIn -> {
 
                 viewModelScope.launch(handler) {
-                    repository.Login(email = state.email, password = state.password)
+                  val id =  repository.Login(email = state.email, password = state.password)
+                    event.onSignInSuccess()
                 }
 
             }
 
-            LoginScreenEvent.RestSnackBarState -> {
+           is  LoginScreenEvent.RestSnackBarState -> {
 
                 state =state.copy(showSnackBar = false, snackBarMessage = "")
+            }
+
+            is LoginScreenEvent.ShowSnackBar -> {
+
+                state=state.copy(snackBarMessage = event.message, showSnackBar = true)
             }
         }
     }
