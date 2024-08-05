@@ -55,6 +55,10 @@ kotlin {
             implementation(libs.koin.compose)
 
             implementation(libs.kotlinx.datetime)
+
+            implementation(libs.preview.tooling)
+
+            implementation(libs.tabler.icon.pack)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -113,6 +117,7 @@ compose.desktop {
 }
 
 dependencies{
+    implementation("androidx.compose.material3:material3-android:1.2.1")
     ksp(libs.room.compiler)
 }
 
