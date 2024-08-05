@@ -19,7 +19,7 @@ interface UserDao {
     suspend fun registerUser(user: User)
 
     @Query("SELECT * FROM User WHERE id = :userId")
-    suspend fun getUserWithTask(userId:String):UserWithTask
+    suspend fun getUserWithTask(userId:Int):UserWithTask
 
 
 }
