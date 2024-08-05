@@ -4,11 +4,13 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -25,6 +27,7 @@ import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -34,10 +37,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import auth.presentation.register.event.RegisterScreenEvent
+import core.presentation.component.CustomButton
+import core.presentation.component.CustomTextField
 import koinViewModel
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -64,7 +70,10 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .safeDrawingPadding()
+        ,
+        backgroundColor = Color(0xFF27323A),
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)
         }
@@ -74,6 +83,7 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier
                 .padding(it)
+                .padding(top = 20.dp)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState(), reverseScrolling = true)
                 .padding(start = 20.dp, end = 20.dp),
@@ -81,128 +91,109 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Card(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .safeDrawingPadding()
-                    .wrapContentWidth()
-                    .padding(top = 40.dp, bottom = 40.dp),
-                elevation = 20.dp,
+                    .wrapContentHeight(),
 
-                border = BorderStroke(width = 2.dp, color = MaterialTheme.colors.secondary)
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
+                Text(
+                    text = "Welcome",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight(700),
+                    color = Color(0xFFFFFFFF),
+                )
 
-                Column(
+                Text(
+                    text = "To",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight(700),
+                    color = Color(0xFFFFFFFF),
+                )
+                Text(
+                    text = "Task Manager!",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight(700),
+                    color = Color(0xFFFFFFFF),
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                CustomTextField(
+                    value = viewModel.state.name,
+                    onValueChange = {
+                        viewModel.onEvent(RegisterScreenEvent.OnNameEntered(it))
+                    },
+                    placeHolder = "Enter Name"
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                CustomTextField(
+                    value = viewModel.state.email,
+                    onValueChange = {
+                        viewModel.onEvent(RegisterScreenEvent.OnEmailEntered(it))
+                    },
+                    placeHolder = "Enter Email"
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                CustomTextField(
+                    value = viewModel.state.password,
+                    onValueChange = {
+                        viewModel.onEvent(RegisterScreenEvent.OnPasswordEntered(it))
+                    },
+                    placeHolder = "Create Password"
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                CustomTextField(
+                    value = viewModel.state.confirmPassword,
+                    onValueChange = {
+                        viewModel.onEvent(RegisterScreenEvent.OnConfiremPasswordEntered(it))
+                    },
+                    placeHolder = "Confirm Password"
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                CustomButton(
+                    onClick = {
+                        viewModel.onEvent(RegisterScreenEvent.OnRegister)
+                    },
+                    buttonText = "Sign Up"
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-
-
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-
-                    Spacer(Modifier.height(10.dp))
-
                     Text(
-                        text = "Register",
-                        fontSize = 30.sp,
-                        fontStyle = FontStyle.Normal,
-                        color = Color.Gray,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Spacer(Modifier.height(20.dp))
-
-
-                    Text(
-                        text = "Create Your Account It's Free And Only Takes a Minute",
-                        color = Color.Gray
-                    )
-
-                    Spacer(Modifier.height(30.dp))
-
-                    OutlinedTextField(
-                        shape = RoundedCornerShape(30.dp),
-                        value = viewModel.state.firstName,
-                        singleLine = true,
-                        onValueChange = {
-                            viewModel.onEvent(
-                                RegisterScreenEvent.OnFirstNameEntered(
-                                    it
-                                )
-                            )
-                        },
-                        label = { Text("First Name") }
+                        text = "Already have an account? ",
+                        fontSize = 14.sp,
+                        color = Color(0xFFFFFFFF)
 
                     )
 
-                    Spacer(Modifier.height(10.dp))
-
-                    OutlinedTextField(
-                        shape = RoundedCornerShape(30.dp),
-                        value = viewModel.state.lastName,
-                        singleLine = true,
-                        onValueChange = { viewModel.onEvent(RegisterScreenEvent.OnLastNameEntered(it)) },
-                        label = { Text("Last Name") }
-
-                    )
-
-                    Spacer(Modifier.height(10.dp))
-
-                    OutlinedTextField(
-                        shape = RoundedCornerShape(30.dp),
-                        value = viewModel.state.email,
-                        singleLine = true,
-                        onValueChange = { viewModel.onEvent(RegisterScreenEvent.OnEmailEntered(it)) },
-                        label = { Text("Email") }
-
-                    )
-
-                    Spacer(Modifier.height(10.dp))
-
-                    OutlinedTextField(
-                        shape = RoundedCornerShape(30.dp),
-                        value = viewModel.state.password,
-                        singleLine = true,
-                        onValueChange = { viewModel.onEvent(RegisterScreenEvent.OnPasswordEntered(it)) },
-                        label = { Text("Password") }
-
-                    )
-                    Spacer(Modifier.height(10.dp))
-
-                    OutlinedTextField(
-                        shape = RoundedCornerShape(30.dp),
-                        value = viewModel.state.confirmPassword,
-                        singleLine = true,
-                        onValueChange = {
-                            viewModel.onEvent(
-                                RegisterScreenEvent.OnConfiremPasswordEntered(
-                                    it
-                                )
-                            )
-                        },
-                        label = { Text("Confirm Password") }
-
-                    )
-
-                    Spacer(Modifier.height(20.dp))
-
-                    OutlinedButton(
-                        modifier = Modifier
-                            .padding(start = 40.dp, end = 40.dp)
-                            .height(40.dp),
-                        onClick = { viewModel.onEvent(RegisterScreenEvent.OnRegister) },
-                        shape = RoundedCornerShape(40.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
-
-                    ) {
-                        Text("Register")
+                    TextButton(
+                        onClick = {}
+                    ){
+                        Text(
+                            text = "sign in",
+                            color = Color(0xFF29A19C)
+                        )
                     }
-                    Spacer(Modifier.height(20.dp))
                 }
+
+
 
             }
 
