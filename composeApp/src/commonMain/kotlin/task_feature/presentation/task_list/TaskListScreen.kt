@@ -1,6 +1,5 @@
-package task_feature.presentation
+package task_feature.presentation.task_list
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
