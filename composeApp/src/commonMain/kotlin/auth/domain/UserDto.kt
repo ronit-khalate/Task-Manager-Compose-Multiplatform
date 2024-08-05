@@ -1,8 +1,7 @@
 package auth.domain
 
 data class UserDto(
-    val firstName:String,
-    val lastName:String,
+    val name:String,
     val email:String,
     val password:String
 )
