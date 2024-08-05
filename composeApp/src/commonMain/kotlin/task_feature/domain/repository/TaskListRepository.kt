@@ -4,7 +4,7 @@ import task_feature.domain.TaskDto
 
 interface TaskListRepository {
 
-    fun changeTaskStatus(taskDto: TaskDto)
-    fun editTask(taskDto: TaskDto)
-    fun deleteTask(taskDto: TaskDto)
+    suspend fun changeTaskStatus(taskDto: TaskDto)
+    suspend fun editTask(taskDto: TaskDto)
+    suspend fun deleteTask(taskDto: TaskDto)
 }
