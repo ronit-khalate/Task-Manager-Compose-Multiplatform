@@ -18,6 +18,7 @@ class LoginScreenViewModel(
 ):ViewModel() {
 
     var state by mutableStateOf(LoginScreenState())
+        private set
 
     val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
 
