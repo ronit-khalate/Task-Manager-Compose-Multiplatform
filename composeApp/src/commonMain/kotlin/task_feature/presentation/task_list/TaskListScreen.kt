@@ -32,12 +32,18 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.sqlite.driver.bundled.SQLITE_OPEN_CREATE
+import core.navigation.Screen
 import task_feature.domain.TaskDto
 import task_feature.presentation.components.TaskComposable
 import task_feature.presentation.components.TaskListTopBar
 
 @Composable
-fun TaskListScreen(modifier: Modifier = Modifier) {
+fun TaskListScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
 
     var showCompletedTasks by remember { mutableStateOf(true) }
     val floatingActionButtonSize = 60.dp
@@ -56,7 +62,11 @@ fun TaskListScreen(modifier: Modifier = Modifier) {
             FloatingActionButton(
                 modifier = Modifier
                     .size(floatingActionButtonSize),
-                onClick = {TODO("Implement Add Task")},
+                onClick = {
+                    navController.navigate(route = Screen.AddTaskScreen.route){
+                        launchSingleTop=true
+                    }
+                },
                 shape = CircleShape,
                 backgroundColor = Color(0xFF435055)
             ){
