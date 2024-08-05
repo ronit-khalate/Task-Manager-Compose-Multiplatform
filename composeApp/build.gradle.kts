@@ -59,6 +59,10 @@ kotlin {
             implementation(libs.preview.tooling)
 
             implementation(libs.tabler.icon.pack)
+
+            implementation(libs.datastore.preferences)
+            implementation(libs.atomicfu)
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

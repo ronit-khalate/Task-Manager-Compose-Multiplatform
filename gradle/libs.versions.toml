@@ -27,6 +27,9 @@ navigationCompose="2.7.0-alpha03"
 
 dateTime="0.6.0"
 
+dataStore="1.1.1"
+atomicFu="0.23.2"
+
 
 
 [libraries]
@@ -60,6 +63,9 @@ kotlinx-datetime ={module ="org.jetbrains.kotlinx:kotlinx-datetime", version.ref
 
 
 tabler-icon-pack ={module ="br.com.devsrsouza.compose.icons:tabler-icons",version.ref = "tablerIconPack"}
+
+datastore-preferences={module="androidx.datastore:datastore-preferences",version.ref="dataStore"}
+atomicfu ={module ="org.jetbrains.kotlinx:atomicfu",version.ref="atomicFu"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
