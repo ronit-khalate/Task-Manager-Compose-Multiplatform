@@ -7,7 +7,7 @@ sealed interface TaskListScreenEvent {
     data object OnSearchedButtonClicked:TaskListScreenEvent
     data object OnAscendingButtonClicked:TaskListScreenEvent
     data object OnDescendingButtonClicked:TaskListScreenEvent
-    data object OnFilterButtonChanged:TaskListScreenEvent
+    data object OnFilterButtonClicked:TaskListScreenEvent
 
 
     data class OnFilterTypeChose(val filter:TaskFilter):TaskListScreenEvent
