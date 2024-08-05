@@ -24,7 +24,8 @@ fun Task.toTaskDto():TaskDto = TaskDto(
     title=this.title,
     description = this.description,
     dueDate = this.dueDate,
-    status = this.status
+    status = this.status,
+    userId = this.userId
 )
 
 
@@ -33,5 +34,6 @@ fun TaskDto.toTask():Task = Task(
     title=this.title,
     description = this.description,
     dueDate = this.dueDate,
-    status = this.status
+    status = this.status,
+    userId = this.userId
 )
