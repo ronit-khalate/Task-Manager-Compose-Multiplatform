@@ -50,7 +50,8 @@ import task_feature.domain.TaskDto
 @Composable
 fun TaskComposable(
     modifier: Modifier = Modifier,
-    task:TaskDto
+    task:TaskDto,
+    onStatusClicked:()->Unit
 ) {
 
     var expanded by remember { mutableStateOf(false) }
@@ -118,30 +119,34 @@ fun TaskComposable(
 
 
 
-                        Canvas(
-                            modifier = Modifier
-                                .clickable {  }
+                        IconButton(onClick = {
+                            onStatusClicked()
+                        }) {
 
-                        ) {
-                            drawCircle(
-                                color = if(task.status) Color(0xFF29A19C) else Color(0xFF27323A),
-                                radius = 28f
-                            )
 
-                            drawCircle(
-                                color = Color(0xFF435055),
-                                radius = 24f
-                            )
+                            Canvas(
+                                modifier = Modifier
 
-                            if(task.status){
+                            ) {
                                 drawCircle(
-                                    color = Color(0xFF29A19C),
-                                    radius = 20f
+                                    color = if (task.status) Color(0xFF29A19C) else Color(0xFF27323A),
+                                    radius = 28f
                                 )
+
+                                drawCircle(
+                                    color = Color(0xFF435055),
+                                    radius = 24f
+                                )
+
+                                if (task.status) {
+                                    drawCircle(
+                                        color = Color(0xFF29A19C),
+                                        radius = 20f
+                                    )
+                                }
+
+
                             }
-
-
-
                         }
 
 
@@ -155,8 +160,7 @@ fun TaskComposable(
 
                     Column(
                         modifier = Modifier
-                            .wrapContentSize()
-                            .background(Color.Red),
+                            .wrapContentSize(),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.Start
                     ) {

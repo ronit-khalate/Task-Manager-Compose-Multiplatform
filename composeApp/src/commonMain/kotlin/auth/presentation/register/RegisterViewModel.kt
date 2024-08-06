@@ -10,11 +10,14 @@ import auth.presentation.register.event.RegisterScreenEvent
 import auth.presentation.register.event.RegistrationException
 import auth.presentation.register.state.RegisterScreenState
 import core.data.entity.User
+import core.data.mapper.toUserDto
+import core.data.repository.DataStoreRepositoryImpl
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
-    private val registrationRepositoryImp: RegistrationRepositoryImp
+    private val registrationRepositoryImp: RegistrationRepositoryImp,
+    private val dataStoreRepository :DataStoreRepositoryImpl
 ):ViewModel() {
 
 
@@ -27,6 +30,9 @@ class RegisterViewModel(
             is RegistrationException.EmailAlreadyExistsException ->{
                 state=state.copy(showSnackBar = true, snackBarMessage = exception.message.toString())
 
+            }
+            else->{
+                println("Register Error ${exception.message}")
             }
         }
 
@@ -71,7 +77,13 @@ class RegisterViewModel(
 
                 val user = User(name = state.name,  password = state.password, email = state.email)
                 viewModelScope.launch(coroutineExceptionHandler){
-                    registrationRepositoryImp.registerUser(user)
+                    val registeredUser = registrationRepositoryImp.registerUser(user)
+
+                   val ans = dataStoreRepository.saveLoggedInUser(registeredUser)
+
+                    event.onSuccess(registeredUser.id)
+
+
                 }
 
 

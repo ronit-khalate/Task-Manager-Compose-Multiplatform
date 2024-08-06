@@ -9,19 +9,17 @@ import kotlinx.datetime.LocalDate
 
 
 @Entity(
-    foreignKeys = [
-       ForeignKey(
-           entity = User::class,
-           parentColumns = arrayOf("id"),
-           childColumns = arrayOf("userId"),
-           onDelete = ForeignKey.CASCADE
-       ),
-    ],
-        indices = [Index(value = ["userId"])]
+    foreignKeys = [ForeignKey(
+        entity = User::class,
+        parentColumns = arrayOf("id"),
+        childColumns = arrayOf("userId"),
+        onDelete = ForeignKey.CASCADE
+    )],
+    indices = [Index(value = ["userId"])]
 )
 data class Task(
     @PrimaryKey(autoGenerate = true)
-    val id:Int = 0,
+    val id:Int?=null,
     val title:String,
     val description:String,
     val dueDate:String,

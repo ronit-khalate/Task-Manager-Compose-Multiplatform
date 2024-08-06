@@ -40,8 +40,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 import auth.presentation.register.event.RegisterScreenEvent
+import core.navigation.Screen
 import core.presentation.component.CustomButton
 import core.presentation.component.CustomTextField
 import koinViewModel
@@ -49,7 +51,10 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun RegistrationScreen( modifier: Modifier = Modifier) {
+fun RegistrationScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
 
     val viewModel:RegisterViewModel = koinViewModel()
 
@@ -164,7 +169,11 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
 
                 CustomButton(
                     onClick = {
-                        viewModel.onEvent(RegisterScreenEvent.OnRegister)
+                        viewModel.onEvent(
+                            RegisterScreenEvent.OnRegister{userId->
+                                navController.navigate(Screen.TaskListScreen.getRoute(userId))
+                            }
+                        )
                     },
                     buttonText = "Sign Up"
                 )
@@ -204,8 +213,3 @@ fun RegistrationScreen( modifier: Modifier = Modifier) {
 
 
 
-@Preview
-@Composable
-fun RegistrationScreenPreview() {
-    RegistrationScreen()
-}

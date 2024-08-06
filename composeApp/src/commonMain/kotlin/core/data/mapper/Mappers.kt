@@ -10,6 +10,7 @@ import task_feature.domain.UserWithTasksDto
 
 fun User.toUserDto():UserDto = UserDto(
 
+    id=this.id!!,
     name = this.name,
     email = this.email,
     password = this.password

@@ -100,7 +100,7 @@ fun TaskListTopBar(
             }
 
             IconButton(
-                onClick = { TODO("Implement Sort Descendion Button") }
+                onClick = { TODO("Implement Sort Descending Button") }
             ){
 
                 Image(

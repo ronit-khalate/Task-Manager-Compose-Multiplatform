@@ -2,10 +2,13 @@ package core.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Upsert
 import core.data.entity.User
 import core.data.entity.UserWithTask
+
 import javax.annotation.processing.Generated
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -18,8 +21,9 @@ interface UserDao {
     @Upsert
     suspend fun registerUser(user: User)
 
+    @Transaction
     @Query("SELECT * FROM User WHERE id = :userId")
-    suspend fun getUserWithTask(userId:Int):UserWithTask
+    fun getUserWithTask(userId:Int): Flow<UserWithTask?>
 
 
 }

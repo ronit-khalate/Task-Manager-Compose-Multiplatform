@@ -6,7 +6,7 @@ sealed interface RegisterScreenEvent {
     data class OnEmailEntered(val email:String):RegisterScreenEvent
     data class OnPasswordEntered(val password:String):RegisterScreenEvent
     data class OnConfiremPasswordEntered(val confirmPassword:String):RegisterScreenEvent
-    data object OnRegister:RegisterScreenEvent
+    data class OnRegister(val onSuccess:(userId:Int)->Unit):RegisterScreenEvent
     data object RestSnackBarState:RegisterScreenEvent
 
 
