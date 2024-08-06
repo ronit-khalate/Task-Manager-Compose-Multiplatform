@@ -8,5 +8,6 @@ data class TaskListScreenState(
     val searchedText:String ="",
     val order:TaskOrder = TaskOrder.ASCENDING,
     val filter:TaskFilter = TaskFilter.DATE,
-    val taskList:List<TaskDto> = emptyList()
+
+
 )
