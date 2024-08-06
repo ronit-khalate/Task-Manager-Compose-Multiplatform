@@ -7,28 +7,47 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import auth.presentation.login.LoginScreen
 import auth.presentation.register.RegistrationScreen
+import core.data.repository.DataStoreRepositoryImpl
 import core.navigation.Screen
-import task_feature.presentation.TaskListScreen
-import task_feature.presentation.components.AddTaskTopBar
+import core.presentation.component.FlashScreen
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.core.parameter.parametersOf
+import task_feature.presentation.add_task.AddTaskScreen
+import task_feature.presentation.add_task.AddTaskViewModel
+import task_feature.presentation.task_list.TaskListScreen
+import task_feature.presentation.task_list.TaskListScreenViewModel
 
 class MainActivity : ComponentActivity() {
+
+    val dataStoreRepository: DataStoreRepositoryImpl by inject<DataStoreRepositoryImpl>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+//        WindowCompat.setDecorFitsSystemWindows(window,false)
         enableEdgeToEdge()
-        WindowCompat.setDecorFitsSystemWindows(window,false)
+
+
+
+
+
 
         setContent {
 
             val navController = rememberNavController()
-            NavHost(navController =navController , startDestination = Screen.LoginScreen.route ){
+
+           
+
+            NavHost(navController =navController , startDestination = Screen.FlashScreen.route ,){
+                
+                composable(route = Screen.FlashScreen.route){
+                    
+                    FlashScreen(dataStoreRepository = dataStoreRepository, navController = navController)
+                }
 
                 composable(route = Screen.LoginScreen.route){
 
@@ -37,16 +56,32 @@ class MainActivity : ComponentActivity() {
 
                 composable(route= Screen.RegistrationScreen.route){
 
-                    RegistrationScreen()
+                    RegistrationScreen(navController = navController)
                 }
 
-                composable(route = Screen.AddTaskScreen.route){
+                composable(
+                    route = Screen.AddTaskScreen.route,
+                    arguments = Screen.AddTaskScreen.argument
+                ){
 
-                    AddTaskTopBar(innerPadding = 24.dp)
+                    val userId = it.arguments?.getInt(Screen.AddTaskScreen.ARGUMENT)
+
+                    val viewModel:AddTaskViewModel = getViewModel<AddTaskViewModel> { parametersOf(userId)}
+                    AddTaskScreen(viewModel = viewModel)
                 }
 
-                composable(route = Screen.TaskListScreen.route){
-                    TaskListScreen()
+                composable(
+                    route = Screen.TaskListScreen.route,
+                    arguments = Screen.TaskListScreen.argument
+                ){
+
+                    val userId = it.arguments?.getInt(Screen.TaskListScreen.ARGUMENT)
+
+                   val viewModel:TaskListScreenViewModel=getViewModel { parametersOf(userId) }
+                    TaskListScreen(
+                        navController = navController,
+                        viewModel = viewModel
+                    )
                 }
 
             }
