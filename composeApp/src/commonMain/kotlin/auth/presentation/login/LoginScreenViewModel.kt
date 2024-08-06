@@ -10,11 +10,13 @@ import auth.data.repository.LoginRepositoryImpl
 import auth.presentation.login.event.LoginScreenEvent
 import auth.presentation.login.event.LoginScreenException
 import auth.presentation.login.state.LoginScreenState
+import core.data.repository.DataStoreRepositoryImpl
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
 class LoginScreenViewModel(
-    private val repository: LoginRepositoryImpl
+    private val repository: LoginRepositoryImpl,
+    private val dataStoreRepositoryImpl: DataStoreRepositoryImpl
 ):ViewModel() {
 
     var state by mutableStateOf(LoginScreenState())
@@ -53,7 +55,8 @@ class LoginScreenViewModel(
             is LoginScreenEvent.OnSignIn -> {
 
                 viewModelScope.launch(handler) {
-                  val id =  repository.Login(email = state.email, password = state.password)
+                  val userDto =  repository.Login(email = state.email, password = state.password)
+                    dataStoreRepositoryImpl.saveLoggedInUser(userDto)
                     event.onSignInSuccess()
                 }
 
