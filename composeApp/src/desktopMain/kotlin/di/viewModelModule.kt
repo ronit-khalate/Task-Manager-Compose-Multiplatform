@@ -11,7 +11,7 @@ import org.koin.dsl.module
 actual val viewModelModule = module {
 
     single{
-        RegisterViewModel(get())
+        RegisterViewModel(get(),get())
 
     }
 
