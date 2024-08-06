@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -34,22 +32,21 @@ import compose.icons.TablerIcons
 import compose.icons.tablericons.Calendar
 import compose.icons.tablericons.Camera
 import core.presentation.component.CustomButton
-import core.presentation.component.CustomTextField
 import task_feature.domain.TaskDto
+import task_feature.presentation.add_task.event.AddTaskScreenEvent
 import task_feature.presentation.components.AddTaskTopBar
 
 @Composable
 fun AddTaskScreen(
     modifier: Modifier = Modifier,
-    task: TaskDto = TaskDto("","","",false)
+    viewModel: AddTaskViewModel
 ) {
 
     val listInnerPadding = 24.dp
     val minCardHeight = 256.dp
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
-            .safeDrawingPadding(),
+            .fillMaxSize(),
         topBar = { AddTaskTopBar(innerPadding = listInnerPadding) },
         backgroundColor = Color(0xFF27323A)
     ) {
@@ -59,10 +56,12 @@ fun AddTaskScreen(
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
-                .padding(vertical = listInnerPadding, horizontal = listInnerPadding),
+                .padding(vertical = listInnerPadding, horizontal = listInnerPadding)
+            ,
+
 
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
 
@@ -70,8 +69,7 @@ fun AddTaskScreen(
                     backgroundColor = Color(0xFF435055),
                     modifier = modifier
                         .fillMaxWidth()
-                        .heightIn(min = minCardHeight)
-                        .width(342.dp),
+                        .heightIn(min = minCardHeight),
                     shape = RoundedCornerShape(20.dp),
 
                 ) {
@@ -104,8 +102,8 @@ fun AddTaskScreen(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(5.dp),
-                                    value = "",
-                                    onValueChange = {},
+                                    value = viewModel.state.title,
+                                    onValueChange = {viewModel.onEvent(AddTaskScreenEvent.OnTitleEntered(it))},
                                     enabled = true,
                                     textStyle = TextStyle(
                                         color = Color(0xFF29A19C),  // Set text color to white for visibility
@@ -118,7 +116,7 @@ fun AddTaskScreen(
                                         verticalAlignment = Alignment.CenterVertically
                                     ){
 
-                                        if (true) {
+                                        if (viewModel.state.title.isBlank()) {
                                             Text(
                                                 "title",
                                                 color = Color.Gray,
@@ -151,8 +149,8 @@ fun AddTaskScreen(
                                         .fillMaxWidth()
                                         .padding(5.dp)
                                         .wrapContentHeight(),  // Added padding for better visibility
-                                    value = "",
-                                    onValueChange = {},
+                                    value = viewModel.state.description,
+                                    onValueChange = {viewModel.onEvent(AddTaskScreenEvent.OnDescriptionEntered(it))},
                                     enabled = true,
                                     textStyle = TextStyle(
                                         color = Color(0xFF29A19C),  // Set text color to white for visibility
@@ -164,7 +162,7 @@ fun AddTaskScreen(
 
 
 
-                                        if (true) {
+                                        if (viewModel.state.description.isBlank()) {
                                             Text(
                                                 "description",
                                                 color = Color.Gray,
@@ -224,7 +222,7 @@ fun AddTaskScreen(
 
                             IconButton(
                                 modifier = Modifier,
-                                onClick = {}
+                                onClick = {viewModel.onEvent(AddTaskScreenEvent.OnStatusButtonClicked)}
                             ){
                                 Canvas(
                                     modifier = Modifier,
@@ -232,7 +230,7 @@ fun AddTaskScreen(
                                     ) {
                                     drawCircle(
 
-                                        color = if (task.status) Color(0xFF29A19C) else Color(
+                                        color = if (viewModel.state.status) Color(0xFF29A19C) else Color(
                                             0xFF27323A
                                         ),
                                         radius = 40f
@@ -243,7 +241,7 @@ fun AddTaskScreen(
                                         radius = 30f
                                     )
 
-                                    if (task.status) {
+                                    if (viewModel.state.status) {
                                         drawCircle(
                                             color = Color(0xFF29A19C),
                                             radius = 20f
@@ -267,16 +265,14 @@ fun AddTaskScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
            CustomButton(
-               onClick = {},
+               onClick = {
+                   viewModel.onEvent(AddTaskScreenEvent.OnAddTask)
+               },
                buttonText = "Add Task"
            )
 
 
-            CustomTextField(
-                value = "",
-                placeHolder = "Enter Email",
-                onValueChange = {}
-            )
+
 
 
         }
