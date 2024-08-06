@@ -1,6 +1,7 @@
 package task_feature.presentation.task_list
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.IconButton
@@ -32,27 +34,35 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.sqlite.driver.bundled.SQLITE_OPEN_CREATE
 import core.navigation.Screen
+import koinViewModel
+import org.koin.core.parameter.parametersOf
 import task_feature.domain.TaskDto
 import task_feature.presentation.components.TaskComposable
 import task_feature.presentation.components.TaskListTopBar
+import task_feature.presentation.task_list.event.TaskListScreenEvent
 
 @Composable
 fun TaskListScreen(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    viewModel: TaskListScreenViewModel
 ) {
 
     var showCompletedTasks by remember { mutableStateOf(true) }
     val floatingActionButtonSize = 60.dp
     val listInnerPadding = 24.dp
 
+
+
     Scaffold(
         modifier = modifier
-            .safeDrawingPadding()
+            .background(Color(0xFF27323A))
             .padding(top = listInnerPadding),
+
         topBar = { TaskListTopBar(
             innerPadding = listInnerPadding
         ) },
@@ -63,7 +73,7 @@ fun TaskListScreen(
                 modifier = Modifier
                     .size(floatingActionButtonSize),
                 onClick = {
-                    navController.navigate(route = Screen.AddTaskScreen.route){
+                    navController.navigate(route = Screen.AddTaskScreen.getRoute(viewModel.userId)){
                         launchSingleTop=true
                     }
                 },
@@ -90,16 +100,13 @@ fun TaskListScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
 
         ){
-            items(3){
+            items(items = viewModel.tasks.filter { !it.status }){
 
                 TaskComposable(
-                    task = TaskDto(
-                        title = "Do Home Work",
-                        description = "Math Home should be done fist \n then chemistry",
-                        status = false,
-                        dueDate = "10/5/24"
-                    )
-                )
+                    task = it
+                ){
+                    viewModel.onEvent(TaskListScreenEvent.OnTaskStatusChanged(it))
+                }
 
 
             }
@@ -145,16 +152,13 @@ fun TaskListScreen(
 
 
 
-                items(5){
+                items(items = viewModel.tasks.filter { it.status }){
 
                     TaskComposable(
-                        task = TaskDto(
-                            title = "Do Home Work",
-                            description = "Math Home should be done fist \n then chemistry",
-                            status = true,
-                            dueDate = "10/5/24"
-                        )
-                    )
+                        task = it
+                    ){
+                        viewModel.onEvent(TaskListScreenEvent.OnTaskStatusChanged(it))
+                    }
                 }
 
                 item { Spacer(modifier = Modifier.height(floatingActionButtonSize + 10.dp))}
