@@ -63,6 +63,10 @@ kotlin {
             implementation(libs.datastore.preferences)
             implementation(libs.atomicfu)
 
+            implementation(libs.date.picker)
+
+            implementation(libs.ladscapist.coil)
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

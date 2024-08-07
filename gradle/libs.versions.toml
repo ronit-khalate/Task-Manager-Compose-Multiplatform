@@ -26,9 +26,11 @@ koinComposeMultiplatform="1.2.0-alpha3"
 navigationCompose="2.7.0-alpha03"
 
 dateTime="0.6.0"
+ladscapistCoil ="2.3.6"
 
 dataStore="1.1.1"
 atomicFu="0.23.2"
+datePicker="1.0.3"
 
 
 
@@ -66,6 +68,11 @@ tabler-icon-pack ={module ="br.com.devsrsouza.compose.icons:tabler-icons",versio
 
 datastore-preferences={module="androidx.datastore:datastore-preferences",version.ref="dataStore"}
 atomicfu ={module ="org.jetbrains.kotlinx:atomicfu",version.ref="atomicFu"}
+
+
+
+date-picker ={module ="network.chaintech:kmp-date-time-picker", version.ref ="datePicker"}
+ladscapist-coil ={module ="com.github.skydoves:landscapist-coil3",version.ref="ladscapistCoil"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
