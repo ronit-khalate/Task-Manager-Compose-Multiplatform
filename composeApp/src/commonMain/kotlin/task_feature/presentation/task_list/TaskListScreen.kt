@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -34,13 +33,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.sqlite.driver.bundled.SQLITE_OPEN_CREATE
 import core.navigation.Screen
-import koinViewModel
-import org.koin.core.parameter.parametersOf
-import task_feature.domain.TaskDto
 import task_feature.presentation.components.TaskComposable
 import task_feature.presentation.components.TaskListTopBar
 import task_feature.presentation.task_list.event.TaskListScreenEvent
@@ -49,7 +43,8 @@ import task_feature.presentation.task_list.event.TaskListScreenEvent
 fun TaskListScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: TaskListScreenViewModel
+    viewModel: TaskListScreenViewModel,
+
 ) {
 
     var showCompletedTasks by remember { mutableStateOf(true) }
@@ -64,7 +59,22 @@ fun TaskListScreen(
             .padding(top = listInnerPadding),
 
         topBar = { TaskListTopBar(
-            innerPadding = listInnerPadding
+            innerPadding = listInnerPadding,
+            onAscendingButtonClicked = {viewModel.onEvent(TaskListScreenEvent.OnAscendingButtonClicked)},
+            onDescendingButtonClicked = {viewModel.onEvent(TaskListScreenEvent.OnDescendingButtonClicked)},
+            onLogOut = { enableLogOutButton ->
+                viewModel.onEvent(
+                    TaskListScreenEvent.OnLogOut{
+
+                        enableLogOutButton()
+                        navController.navigate(Screen.FlashScreen.route){
+                            popUpTo(Screen.FlashScreen.route){
+                                inclusive=true
+                            }
+                        }
+                    }
+                )
+            }
         ) },
         backgroundColor = Color(0xFF27323A),
         floatingActionButton = {
@@ -100,13 +110,18 @@ fun TaskListScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
 
         ){
-            items(items = viewModel.tasks.filter { !it.status }){
+            items(
+                items = viewModel.inCompetedTask,
+                key = { it.id!! }
+            ){
 
-                TaskComposable(
-                    task = it
-                ){
-                    viewModel.onEvent(TaskListScreenEvent.OnTaskStatusChanged(it))
-                }
+                    TaskComposable(
+                            task = it,
+                            onStatusClicked = { viewModel.onEvent(TaskListScreenEvent.OnTaskStatusChanged(it)) },
+                            onDelete = { viewModel.onEvent(TaskListScreenEvent.OnDeleteTask(it)) },
+                            onTitleChanged = { title -> viewModel.onEvent(TaskListScreenEvent.OnEditTask(it.copy(title = title)))},
+                            onDescriptionChanged = { description -> viewModel.onEvent(TaskListScreenEvent.OnEditTask(it.copy(description = description)))}
+                    )
 
 
             }
@@ -152,13 +167,23 @@ fun TaskListScreen(
 
 
 
-                items(items = viewModel.tasks.filter { it.status }){
+                items(
+                    items = viewModel.competedTask,
+                    key = {it.id!!}
+                ){
 
                     TaskComposable(
-                        task = it
-                    ){
-                        viewModel.onEvent(TaskListScreenEvent.OnTaskStatusChanged(it))
-                    }
+                        task = it,
+                        onStatusClicked = { viewModel.onEvent(TaskListScreenEvent.OnTaskStatusChanged(it)) },
+                        onDelete = {viewModel.onEvent(TaskListScreenEvent.OnDeleteTask(it))},
+                        onTitleChanged = {
+
+                            title -> viewModel.onEvent(TaskListScreenEvent.OnTitleEdit(it.copy(title = title)))
+                        },
+                        onDescriptionChanged = {
+                            description -> viewModel.onEvent(TaskListScreenEvent.OnDescriptionEdit(it.copy(description = description)))
+                        }
+                    )
                 }
 
                 item { Spacer(modifier = Modifier.height(floatingActionButtonSize + 10.dp))}
