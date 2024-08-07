@@ -64,7 +64,6 @@ fun LoginScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .safeDrawingPadding()
         ,
         backgroundColor = Color(0xFF27323A),
         snackbarHost = {
