@@ -76,7 +76,6 @@ fun RegistrationScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .safeDrawingPadding()
         ,
         backgroundColor = Color(0xFF27323A),
         snackbarHost = {
@@ -193,7 +192,7 @@ fun RegistrationScreen(
                     )
 
                     TextButton(
-                        onClick = {}
+                        onClick = {navController.popBackStack()}
                     ){
                         Text(
                             text = "sign in",

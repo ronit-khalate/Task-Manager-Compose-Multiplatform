@@ -26,7 +26,7 @@ fun CustomTextField(
     modifier: Modifier = Modifier,
     value:String,
     onValueChange:(String)->Unit,
-    placeHolder:String
+    placeHolder:String,
 ) {
 
 
@@ -55,8 +55,8 @@ fun CustomTextField(
                 onValueChange = onValueChange,
                 textStyle = TextStyle(
                     color = Color(0xFFFFFFFF),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight(700)
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Normal
                 )
 
 
@@ -66,8 +66,8 @@ fun CustomTextField(
                     Text(
                         text = placeHolder,
                         color = Color.LightGray,
-                        fontWeight = FontWeight(700),
-                        fontSize = 20.sp
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 18.sp
 
                     )
                 }

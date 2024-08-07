@@ -21,10 +21,10 @@ actual val viewModelModule:Module = module {
     }
 
     viewModel {
-        TaskListScreenViewModel(userId = it.get(),get(),get())
+        TaskListScreenViewModel(get(),get())
     }
 
     viewModel {
-        AddTaskViewModel(get(),get(), userId = it.get())
+        AddTaskViewModel(get(),get())
     }
 }

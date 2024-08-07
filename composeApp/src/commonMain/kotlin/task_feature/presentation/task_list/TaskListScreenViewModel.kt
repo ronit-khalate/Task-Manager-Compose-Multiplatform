@@ -20,10 +20,12 @@ import task_feature.presentation.task_list.state.TaskListScreenState
 import kotlin.properties.Delegates
 
 class TaskListScreenViewModel(
-    var userId:Int,
     private val repository: TaskListRepository,
     private val dataStoreRepositoryImpl: DataStoreRepositoryImpl
 ):ViewModel() {
+
+
+    var userId =0
 
     var state by mutableStateOf(TaskListScreenState())
         private set
@@ -199,6 +201,7 @@ class TaskListScreenViewModel(
             is TaskListScreenEvent.OnLogOut -> {
 
                 viewModelScope.launch {
+                    dataStoreRepositoryImpl.removeLoggedInUser()
                     event.onSuccess()
 
                 }

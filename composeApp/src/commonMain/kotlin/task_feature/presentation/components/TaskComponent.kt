@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -58,6 +59,8 @@ fun TaskComposable(
     onDelete:()->Unit,
     onTitleChanged:(String)->Unit,
     onDescriptionChanged:(String)->Unit,
+    platform:Int =1
+
 ) {
 
     var expanded by remember { mutableStateOf(false) }
@@ -113,7 +116,7 @@ fun TaskComposable(
                             .wrapContentWidth(),  // Added padding for better visibility
                         value = task.title,
                         onValueChange = onTitleChanged,
-                        enabled = isEditing,
+                        enabled = isEditing && expanded,
                         textStyle = TextStyle(
                             color = titleColor,  // Set text color to white for visibility
                             fontSize = 18.sp,
@@ -154,22 +157,23 @@ fun TaskComposable(
 
                             Canvas(
                                 modifier = Modifier
+                                    .size(28.dp)
 
                             ) {
                                 drawCircle(
                                     color = if (status) Color(0xFF29A19C) else Color(0xFF27323A),
-                                    radius = 28f
+                                    radius = if(platform==1)28f else 10f
                                 )
 
                                 drawCircle(
                                     color = Color(0xFF435055),
-                                    radius = 24f
+                                    radius = if(platform==1)24f else 8f
                                 )
 
                                 if (status) {
                                     drawCircle(
                                         color = Color(0xFF29A19C),
-                                        radius = 20f
+                                        radius = if(platform==1)20f else 5f
                                     )
                                 }
 
@@ -203,7 +207,7 @@ fun TaskComposable(
                                 color = Color.LightGray
                             ),
                             onValueChange = onDescriptionChanged,
-                            enabled = isEditing,
+                            enabled = isEditing && expanded,
                             singleLine = false
 
                         ){

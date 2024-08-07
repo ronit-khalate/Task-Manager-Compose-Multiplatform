@@ -2,10 +2,14 @@ package task_feature.presentation.add_task
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +17,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.BottomSheetScaffold
@@ -21,6 +26,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,7 +56,8 @@ import task_feature.presentation.components.AddTaskTopBar
 fun AddTaskScreen(
     modifier: Modifier = Modifier,
     viewModel: AddTaskViewModel,
-    navController: NavController
+    navController: NavController,
+    platform:Int=1
 ) {
 
     val listInnerPadding = 24.dp
@@ -60,7 +68,7 @@ fun AddTaskScreen(
 
     BottomSheetScaffold(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxHeight(),
         topBar = { AddTaskTopBar(innerPadding = listInnerPadding) },
         backgroundColor = Color(0xFF27323A),
 
@@ -91,7 +99,7 @@ fun AddTaskScreen(
 
             modifier = Modifier
                 .padding(it)
-                .fillMaxSize()
+                .fillMaxHeight()
                 .padding(vertical = listInnerPadding, horizontal = listInnerPadding)
             ,
 
@@ -273,12 +281,17 @@ fun AddTaskScreen(
 
 
 
+
                             IconButton(
                                 modifier = Modifier,
-                                onClick = {viewModel.onEvent(AddTaskScreenEvent.OnStatusButtonClicked)}
+                                onClick = {viewModel.onEvent(AddTaskScreenEvent.OnStatusButtonClicked)},
+                                enabled = true
                             ){
+
+                                Image(Icons.Rounded.Done,"")
                                 Canvas(
-                                    modifier = Modifier,
+                                    modifier = Modifier
+                                        .size(28.dp)
 
                                     ) {
                                     drawCircle(
@@ -286,18 +299,18 @@ fun AddTaskScreen(
                                         color = if (viewModel.state.status) Color(0xFF29A19C) else Color(
                                             0xFF27323A
                                         ),
-                                        radius = 40f
+                                        radius = if(platform==1) 40f else 10f
                                     )
 
                                     drawCircle(
                                         color = Color(0xFF435055),
-                                        radius = 30f
+                                        radius = if(platform==1) 30f else 8f
                                     )
 
                                     if (viewModel.state.status) {
                                         drawCircle(
                                             color = Color(0xFF29A19C),
-                                            radius = 20f
+                                            radius = if(platform==1) 20f else 5f
                                         )
                                     }
 

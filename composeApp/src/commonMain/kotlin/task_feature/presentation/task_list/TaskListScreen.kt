@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -44,11 +45,14 @@ fun TaskListScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     viewModel: TaskListScreenViewModel,
+    platform:Int=1,
+    floatingActionButton: (@Composable ()-> Unit)? = null,
+
 
 ) {
 
     var showCompletedTasks by remember { mutableStateOf(true) }
-    val floatingActionButtonSize = 60.dp
+
     val listInnerPadding = 24.dp
 
 
@@ -79,32 +83,14 @@ fun TaskListScreen(
         backgroundColor = Color(0xFF27323A),
         floatingActionButton = {
 
-            FloatingActionButton(
-                modifier = Modifier
-                    .size(floatingActionButtonSize),
-                onClick = {
-                    navController.navigate(route = Screen.AddTaskScreen.getRoute(viewModel.userId)){
-                        launchSingleTop=true
-                    }
-                },
-                shape = CircleShape,
-                backgroundColor = Color(0xFF435055)
-            ){
-                Image(
-                    modifier = Modifier
-                        .size(35.dp),
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add Task",
-                    colorFilter = ColorFilter.tint(color = Color(0xFFA3F7BF))
-                )
-            }
+           floatingActionButton?.invoke()
 
         }
     ){
 
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxHeight()
                 .padding(start = listInnerPadding, end = listInnerPadding),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -120,7 +106,8 @@ fun TaskListScreen(
                             onStatusClicked = { viewModel.onEvent(TaskListScreenEvent.OnTaskStatusChanged(it)) },
                             onDelete = { viewModel.onEvent(TaskListScreenEvent.OnDeleteTask(it)) },
                             onTitleChanged = { title -> viewModel.onEvent(TaskListScreenEvent.OnEditTask(it.copy(title = title)))},
-                            onDescriptionChanged = { description -> viewModel.onEvent(TaskListScreenEvent.OnEditTask(it.copy(description = description)))}
+                            onDescriptionChanged = { description -> viewModel.onEvent(TaskListScreenEvent.OnEditTask(it.copy(description = description)))},
+                            platform = platform
                     )
 
 
@@ -182,11 +169,12 @@ fun TaskListScreen(
                         },
                         onDescriptionChanged = {
                             description -> viewModel.onEvent(TaskListScreenEvent.OnDescriptionEdit(it.copy(description = description)))
-                        }
+                        },
+                        platform = platform
                     )
                 }
 
-                item { Spacer(modifier = Modifier.height(floatingActionButtonSize + 10.dp))}
+                item { Spacer(modifier = Modifier.height(60.dp + 10.dp))}
             }
 
 

@@ -5,10 +5,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,6 +36,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 import task_feature.presentation.add_task.AddTaskScreen
 import task_feature.presentation.add_task.AddTaskViewModel
+import task_feature.presentation.add_task.ViewModelStoreOwenAddTask
 import task_feature.presentation.task_list.TaskListScreen
 import task_feature.presentation.task_list.TaskListScreenViewModel
 
@@ -70,9 +81,7 @@ class MainActivity : ComponentActivity() {
                     arguments = Screen.AddTaskScreen.argument
                 ){
 
-                    val userId = it.arguments?.getInt(Screen.AddTaskScreen.ARGUMENT)
-
-                    val viewModel:AddTaskViewModel = getViewModel<AddTaskViewModel> { parametersOf(userId)}
+                    val viewModel:AddTaskViewModel = koinViewModel(viewModelStoreOwner =ViewModelStoreOwenAddTask )
                     AddTaskScreen(viewModel = viewModel, navController = navController)
                 }
 
@@ -80,15 +89,32 @@ class MainActivity : ComponentActivity() {
                     route = Screen.TaskListScreen.route,
                     arguments = Screen.TaskListScreen.argument
                 ){
-
-                    val userId = it.arguments?.getInt(Screen.TaskListScreen.ARGUMENT)
-
-
-                   val viewModel:TaskListScreenViewModel = koinViewModel(parameters = { parametersOf(userId) })
+                   val viewModel:TaskListScreenViewModel = koinViewModel()
                     TaskListScreen(
                         navController = navController,
                         viewModel = viewModel,
-                    )
+                    ){
+                        val floatingActionButtonSize = 60.dp
+                        FloatingActionButton(
+                            modifier = Modifier
+                                .size(floatingActionButtonSize),
+                            onClick = {
+                                navController.navigate(route = Screen.AddTaskScreen.getRoute(viewModel.userId)){
+                                    launchSingleTop=true
+                                }
+                            },
+                            shape = CircleShape,
+                            backgroundColor = Color(0xFF435055)
+                        ){
+                            Image(
+                                modifier = Modifier
+                                    .size(35.dp),
+                                imageVector = Icons.Default.Add,
+                                contentDescription = "Add Task",
+                                colorFilter = ColorFilter.tint(color = Color(0xFFA3F7BF))
+                            )
+                        }
+                    }
                 }
 
             }

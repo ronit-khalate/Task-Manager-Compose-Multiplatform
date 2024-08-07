@@ -33,7 +33,7 @@ fun CustomButton(
         Text(
             text = buttonText,
             fontWeight = FontWeight(700),
-            fontSize = 20.sp
+            fontSize = 18.sp
         )
     }
 

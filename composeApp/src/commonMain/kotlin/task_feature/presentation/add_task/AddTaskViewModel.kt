@@ -7,22 +7,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import core.data.repository.DataStoreRepositoryImpl
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import task_feature.domain.TaskDto
 import task_feature.domain.repository.AddTaskRepository
 import task_feature.presentation.add_task.event.AddTaskScreenEvent
 import task_feature.presentation.add_task.state.AddTaskScreenState
+import kotlin.properties.Delegates
 
 class AddTaskViewModel(
 
     private val repository: AddTaskRepository,
     private val dataStoreRepositoryImpl: DataStoreRepositoryImpl,
-    private var userId:Int
+
 ):ViewModel() {
+
+    lateinit var job:Job
+    var userId by Delegates.notNull<Int>()
 
     init {
 
-        viewModelScope.launch {
+        job=viewModelScope.launch {
 
             dataStoreRepositoryImpl.getLoggedInUserId().collect{
                 userId = it!!
@@ -35,6 +40,11 @@ class AddTaskViewModel(
         private set
 
 
+    private fun reset(){
+        state = AddTaskScreenState()
+    }
+
+
 
 
     fun onEvent(event:AddTaskScreenEvent){
@@ -45,7 +55,7 @@ class AddTaskViewModel(
 
 
                     val task = TaskDto(
-                        userId = userId,
+                        userId = userId!!,
                         title = state.title,
                         description = state.description,
                         dueDate = state.dueDate,
@@ -54,6 +64,12 @@ class AddTaskViewModel(
 
 
                     repository.addTask(task = task)
+
+                    job.cancel()
+
+                    reset()
+
+
 
 
                 }
