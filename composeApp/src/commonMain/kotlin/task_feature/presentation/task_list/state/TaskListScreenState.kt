@@ -7,7 +7,7 @@ import task_feature.domain.TaskOrder
 data class TaskListScreenState(
     val searchedText:String ="",
     val order:TaskOrder = TaskOrder.ASCENDING,
-    val filter:TaskFilter = TaskFilter.DATE,
+    val filter:TaskFilter = TaskFilter.TITLE,
 
 
 )
