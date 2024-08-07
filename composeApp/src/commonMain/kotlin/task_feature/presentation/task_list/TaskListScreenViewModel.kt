@@ -189,6 +189,7 @@ class TaskListScreenViewModel(
                 }
 
 
+
                 ts?.let {
 
                     tasks[idx!!]= it.copy(title = event.task.title)
