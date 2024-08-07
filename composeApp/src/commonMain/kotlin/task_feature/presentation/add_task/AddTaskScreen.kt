@@ -15,11 +15,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,27 +33,58 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import compose.icons.TablerIcons
 import compose.icons.tablericons.Calendar
 import compose.icons.tablericons.Camera
+import core.navigation.Screen
 import core.presentation.component.CustomButton
 import task_feature.domain.TaskDto
+import task_feature.presentation.add_task.component.DatePicker
 import task_feature.presentation.add_task.event.AddTaskScreenEvent
 import task_feature.presentation.components.AddTaskTopBar
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AddTaskScreen(
     modifier: Modifier = Modifier,
-    viewModel: AddTaskViewModel
+    viewModel: AddTaskViewModel,
+    navController: NavController
 ) {
 
     val listInnerPadding = 24.dp
     val minCardHeight = 256.dp
-    Scaffold(
+
+    var showDatePicker by mutableStateOf(false)
+
+
+    BottomSheetScaffold(
         modifier = Modifier
             .fillMaxSize(),
         topBar = { AddTaskTopBar(innerPadding = listInnerPadding) },
-        backgroundColor = Color(0xFF27323A)
+        backgroundColor = Color(0xFF27323A),
+
+
+
+        sheetContent = {
+
+            if(showDatePicker) {
+
+
+                DatePicker(
+                    showDatePicker = showDatePicker,
+                    onDismiss = { showDatePicker = !showDatePicker },
+                    onDoneClicked = {
+                        viewModel.onEvent(AddTaskScreenEvent.OnDueDateSelected(it))
+                        showDatePicker = !showDatePicker
+                    }
+                )
+            }
+        },
+        sheetBackgroundColor = Color(0xFF27323A),
+
+        sheetElevation = 0.dp
+
     ) {
 
         Column(
@@ -134,6 +170,21 @@ fun AddTaskScreen(
                             }
                             Spacer(modifier = Modifier.height(10.dp))
 
+                            if(viewModel.state.dueDate.isNotEmpty()){
+                                Text(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(5.dp),
+                                    text = if(viewModel.state.dueDate.isBlank()) "due date" else viewModel.state.dueDate,
+                                    fontWeight = FontWeight(400),
+                                    fontSize = 14.sp,
+                                    color = if(viewModel.state.dueDate.isBlank()) Color.Gray else Color(0xFF29A19C)
+                                )
+                            }
+
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
 
                             Row(
                                 modifier = Modifier
@@ -191,7 +242,9 @@ fun AddTaskScreen(
 
                             IconButton(
                                 modifier = Modifier,
-                                onClick = {}
+                                onClick = {
+                                    showDatePicker = !showDatePicker
+                                }
                             ){
                                Image(
                                    modifier = Modifier
@@ -267,6 +320,14 @@ fun AddTaskScreen(
            CustomButton(
                onClick = {
                    viewModel.onEvent(AddTaskScreenEvent.OnAddTask)
+
+                   navController.navigate(Screen.TaskListScreen.route){
+                       popUpTo(Screen.AddTaskScreen.route){
+                           inclusive=true
+                       }
+
+                   }
+
                },
                buttonText = "Add Task"
            )
