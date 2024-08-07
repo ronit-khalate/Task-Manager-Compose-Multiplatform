@@ -8,7 +8,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import core.data.repository.DataStoreRepositoryImpl
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import task_feature.domain.TaskDto
 import task_feature.domain.TaskFilter
@@ -27,6 +29,9 @@ class TaskListScreenViewModel(
         private set
     var tasks = mutableStateListOf<TaskDto>()
 
+    var competedTask by mutableStateOf<List<TaskDto>>(emptyList())
+    var inCompetedTask by mutableStateOf<List<TaskDto>>(emptyList())
+
     init {
 
         viewModelScope.launch {
@@ -39,6 +44,9 @@ class TaskListScreenViewModel(
                     it?.let {
                         tasks.clear()
                        tasks.addAll(it)
+
+                        competedTask=tasks.filter { it.status }
+                        inCompetedTask=tasks.filter { !it.status }
                     }
 
 
@@ -62,6 +70,7 @@ class TaskListScreenViewModel(
 
 
 
+
             }
 
         }
@@ -75,7 +84,7 @@ class TaskListScreenViewModel(
         when(event){
             is TaskListScreenEvent.OnAscendingButtonClicked -> {
 
-                tasks.clear()
+
                 val sorted=tasks.sortedBy {
                     if(state.filter == TaskFilter.TITLE){
                         it.title
@@ -85,11 +94,14 @@ class TaskListScreenViewModel(
                         it.dueDate
                     }
                 }
-
+                tasks.clear()
                 tasks.addAll(sorted)
+                competedTask=tasks.filter { it.status }
+                inCompetedTask=tasks.filter { !it.status }
+
             }
             is TaskListScreenEvent.OnDescendingButtonClicked -> {
-                tasks.clear()
+
                 val sorted=tasks.sortedByDescending {
                     if(state.filter == TaskFilter.TITLE){
                         it.title
@@ -100,7 +112,10 @@ class TaskListScreenViewModel(
                     }
                 }
 
+                tasks.clear()
                 tasks.addAll(sorted)
+                competedTask=tasks.filter { it.status }
+                inCompetedTask=tasks.filter { !it.status }
             }
             is TaskListScreenEvent.OnFilterButtonClicked -> TODO()
             is TaskListScreenEvent.OnFilterTypeChose -> {
@@ -115,7 +130,75 @@ class TaskListScreenViewModel(
             is TaskListScreenEvent.OnTaskStatusChanged -> {
 
                 viewModelScope.launch {
+                    delay(800)
                     repository.changeTaskStatus(event.taskDto.copy(status = !event.taskDto.status))
+
+                }
+            }
+
+            is TaskListScreenEvent.OnDeleteTask -> {
+
+                viewModelScope.launch {
+                    delay(800)
+                    repository.deleteTask(taskDto = event.task )
+                }
+
+            }
+
+            is TaskListScreenEvent.OnEditTask ->{
+
+                viewModelScope.launch {
+
+                    repository.editTask(event.task)
+
+                }
+            }
+
+            is TaskListScreenEvent.OnDescriptionEdit -> {
+
+                var idx :Int? = null
+                var ts:TaskDto?=null
+
+                tasks.forEachIndexed { index, taskDto ->
+
+                    if (event.task.id==taskDto.id){
+                        idx=index
+                        ts=taskDto
+                    }
+                }
+
+
+                ts?.let {
+
+                    tasks[idx!!]= it.copy(description = event.task.description)
+                }
+
+
+            }
+            is TaskListScreenEvent.OnTitleEdit -> {
+
+                var idx :Int? = null
+                var ts:TaskDto?=null
+
+                tasks.mapIndexed() { index, taskDto ->
+
+                    if (event.task.id==taskDto.id){
+                        idx=index
+                        ts=taskDto
+                    }
+                }
+
+
+                ts?.let {
+
+                    tasks[idx!!]= it.copy(title = event.task.title)
+                }
+            }
+
+            is TaskListScreenEvent.OnLogOut -> {
+
+                viewModelScope.launch {
+                    event.onSuccess()
 
                 }
             }
