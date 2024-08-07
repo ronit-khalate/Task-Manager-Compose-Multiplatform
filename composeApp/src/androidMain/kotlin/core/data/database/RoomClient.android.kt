@@ -7,6 +7,7 @@ import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 actual class RoomClient(private val context: Context){
     actual fun getDatabase(): Database {
 
+
         val dbFile = context.getDatabasePath("database.db")
         return Room.databaseBuilder<Database>(
             context = context,
