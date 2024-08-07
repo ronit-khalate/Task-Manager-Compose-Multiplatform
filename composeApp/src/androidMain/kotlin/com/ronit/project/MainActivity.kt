@@ -6,7 +6,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,8 +19,11 @@ import core.data.repository.DataStoreRepositoryImpl
 import core.navigation.Screen
 import core.presentation.component.FlashScreen
 import org.koin.android.ext.android.inject
+import org.koin.androidx.compose.koinViewModel
+
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.core.scope.Scope
 import task_feature.presentation.add_task.AddTaskScreen
 import task_feature.presentation.add_task.AddTaskViewModel
 import task_feature.presentation.task_list.TaskListScreen
@@ -67,7 +73,7 @@ class MainActivity : ComponentActivity() {
                     val userId = it.arguments?.getInt(Screen.AddTaskScreen.ARGUMENT)
 
                     val viewModel:AddTaskViewModel = getViewModel<AddTaskViewModel> { parametersOf(userId)}
-                    AddTaskScreen(viewModel = viewModel)
+                    AddTaskScreen(viewModel = viewModel, navController = navController)
                 }
 
                 composable(
@@ -77,10 +83,11 @@ class MainActivity : ComponentActivity() {
 
                     val userId = it.arguments?.getInt(Screen.TaskListScreen.ARGUMENT)
 
-                   val viewModel:TaskListScreenViewModel=getViewModel { parametersOf(userId) }
+
+                   val viewModel:TaskListScreenViewModel = koinViewModel(parameters = { parametersOf(userId) })
                     TaskListScreen(
                         navController = navController,
-                        viewModel = viewModel
+                        viewModel = viewModel,
                     )
                 }
 

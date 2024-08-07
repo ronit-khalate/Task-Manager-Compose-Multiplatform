@@ -30,8 +30,11 @@ class AddTaskViewModel(
         }
     }
 
+
     var state by mutableStateOf(AddTaskScreenState())
         private set
+
+
 
 
     fun onEvent(event:AddTaskScreenEvent){
@@ -45,11 +48,14 @@ class AddTaskViewModel(
                         userId = userId,
                         title = state.title,
                         description = state.description,
-                        dueDate = state.dueDate
+                        dueDate = state.dueDate,
+                        status = state.status
                     )
 
 
                     repository.addTask(task = task)
+
+
                 }
             }
             is AddTaskScreenEvent.OnDescriptionEntered -> {
@@ -61,6 +67,12 @@ class AddTaskViewModel(
 
             is AddTaskScreenEvent.OnStatusButtonClicked -> {
                 state=state.copy(status = !state.status)
+            }
+
+            is AddTaskScreenEvent.OnDueDateSelected -> {
+                state=state.copy(
+                    dueDate = "${event.localDate.dayOfMonth} ${event.localDate.month} ${event.localDate.year}"
+                )
             }
         }
     }

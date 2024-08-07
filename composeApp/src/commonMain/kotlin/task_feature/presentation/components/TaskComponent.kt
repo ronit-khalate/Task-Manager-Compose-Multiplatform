@@ -25,9 +25,11 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,6 +44,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import compose.icons.TablerIcons
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import task_feature.domain.TaskDto
 
@@ -51,15 +54,35 @@ import task_feature.domain.TaskDto
 fun TaskComposable(
     modifier: Modifier = Modifier,
     task:TaskDto,
-    onStatusClicked:()->Unit
+    onStatusClicked:()->Unit,
+    onDelete:()->Unit,
+    onTitleChanged:(String)->Unit,
+    onDescriptionChanged:(String)->Unit,
 ) {
 
     var expanded by remember { mutableStateOf(false) }
 
+    var cardColor by remember {
+
+        if(!task.status){
+            mutableStateOf(Color(0xFF435055))
+        }
+        else{
+            mutableStateOf( Color(0xFF343738))
+        }
+
+    }
+    var titleColor by remember {  mutableStateOf(Color(0xFF29A19C) )}
+
+    var status by remember { mutableStateOf(task.status) }
+
+    var isEditing by remember { mutableStateOf(false) }
+
+
 
 
         Card(
-            backgroundColor = Color(0xFF435055),
+            backgroundColor = cardColor,
             modifier = modifier
                 .fillMaxWidth()
                 .heightIn(min = 64.dp   ),
@@ -89,14 +112,16 @@ fun TaskComposable(
                         modifier = Modifier
                             .wrapContentWidth(),  // Added padding for better visibility
                         value = task.title,
-                        onValueChange = {},
-                        enabled = false,
+                        onValueChange = onTitleChanged,
+                        enabled = isEditing,
                         textStyle = TextStyle(
-                            color = Color(0xFF29A19C),  // Set text color to white for visibility
+                            color = titleColor,  // Set text color to white for visibility
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )
-                    )
+                    ){
+                        it()
+                    }
 
 
                     Row(
@@ -120,6 +145,9 @@ fun TaskComposable(
 
 
                         IconButton(onClick = {
+                            status=!status
+                            cardColor= Color(0xFF343738)
+                            titleColor = Color.LightGray
                             onStatusClicked()
                         }) {
 
@@ -129,7 +157,7 @@ fun TaskComposable(
 
                             ) {
                                 drawCircle(
-                                    color = if (task.status) Color(0xFF29A19C) else Color(0xFF27323A),
+                                    color = if (status) Color(0xFF29A19C) else Color(0xFF27323A),
                                     radius = 28f
                                 )
 
@@ -138,7 +166,7 @@ fun TaskComposable(
                                     radius = 24f
                                 )
 
-                                if (task.status) {
+                                if (status) {
                                     drawCircle(
                                         color = Color(0xFF29A19C),
                                         radius = 20f
@@ -174,11 +202,13 @@ fun TaskComposable(
                                 fontSize = 16.sp,
                                 color = Color.LightGray
                             ),
-                            onValueChange = {},
-                            enabled = false,
+                            onValueChange = onDescriptionChanged,
+                            enabled = isEditing,
                             singleLine = false
 
-                        )
+                        ){
+                            it()
+                        }
 
                         Spacer(Modifier.height(25.dp))
 
@@ -190,11 +220,19 @@ fun TaskComposable(
                             horizontalArrangement = Arrangement.End
                         ) {
 
-                            IconButton(onClick = {}) {
+                            IconButton(
+                                onClick = {
+
+                                    if(isEditing){
+
+                                    }
+                                    isEditing = !isEditing}
+
+                            ) {
                                 Image(
                                     modifier = Modifier
                                         .size(24.dp),
-                                    imageVector = Icons.Default.Edit,
+                                    imageVector = if(!isEditing)Icons.Default.Edit else Icons.Default.Done,
                                     contentDescription = "Edit",
                                     colorFilter = ColorFilter.tint(Color.Gray)
                                 )
@@ -202,12 +240,15 @@ fun TaskComposable(
 
 
                             Spacer(Modifier.width(20.dp))
-                            IconButton(onClick = {}) {
+                            IconButton(onClick = {
+                                onDelete()
+                                cardColor = Color(0xFF663131)
+                            }) {
                                 Image(
                                     modifier = Modifier
                                         .size(24.dp),
                                     imageVector = Icons.Default.Delete,
-                                    contentDescription = "Edit",
+                                    contentDescription = "Delete",
                                     colorFilter = ColorFilter.tint(Color.Gray)
                                 )
                             }
