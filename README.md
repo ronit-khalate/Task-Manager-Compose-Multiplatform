@@ -25,7 +25,7 @@ Compose Multiplatform Task Manager is an application targeting Android and deskt
 
 ### Android
 
-<img src="images/android/add_task_android.png" width="600" alt="Android Screenshot 1">
+<img src="images/android/add_task_android.png" width="300" alt="Android Screenshot 1">
 <img src="images/android/add_task_android_2.png" width="300" alt="Android Screenshot 1">
 <img src="images/android/sign_in_android.png" width="300" alt="Android Screenshot 1">
 <img src="images/android/sign_up_android.png" width="300" alt="Android Screenshot 1">
