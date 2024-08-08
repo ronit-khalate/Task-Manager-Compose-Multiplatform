@@ -23,16 +23,17 @@ class AddTaskViewModel(
 ):ViewModel() {
 
     lateinit var job:Job
-    var userId by Delegates.notNull<Int>()
+    var userId:Int? =0
 
     init {
 
         job=viewModelScope.launch {
 
             dataStoreRepositoryImpl.getLoggedInUserId().collect{
-                userId = it!!
+                userId = it
             }
         }
+
     }
 
 
