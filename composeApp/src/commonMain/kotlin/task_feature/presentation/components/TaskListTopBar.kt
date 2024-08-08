@@ -23,10 +23,13 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,8 +45,15 @@ import compose.icons.tablericons.Filter
 import compose.icons.tablericons.Logout
 import compose.icons.tablericons.SortAscending
 import compose.icons.tablericons.SortDescending
+import core.presentation.component.CustomSearchBar
+import core.presentation.component.CustomTextField
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.timeout
+import task_feature.presentation.task_list.event.TaskListScreenEvent
 
 
+@OptIn(FlowPreview::class)
 @Composable
 fun TaskListTopBar(
     modifier: Modifier = Modifier,
@@ -51,10 +61,33 @@ fun TaskListTopBar(
     onAscendingButtonClicked:()->Unit,
     onDescendingButtonClicked:()->Unit,
     onLogOut:(enableLogOutButton:()->Unit)->Unit,
+    onSearchTextEntered:(String)->Unit
 
 ) {
 
-    var isLogOutBtnEnable by mutableStateOf(true)
+    var isLogOutBtnEnable by remember{ mutableStateOf(true)}
+
+    var isSearching by remember { mutableStateOf(false)}
+
+    var searchText by remember { mutableStateOf("")}
+
+    LaunchedEffect(searchText) {
+
+
+        if(searchText.isNotBlank()) {
+
+
+            snapshotFlow {
+                searchText
+            }
+                .debounce(100L)
+                .collect {
+
+                    onSearchTextEntered(it)
+
+                }
+        }
+    }
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -70,32 +103,66 @@ fun TaskListTopBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Tasks",
-                fontSize = 28.sp,
-                fontWeight = FontWeight(700),
-                color = Color.LightGray
 
-            )
 
+            Row(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .weight(0.75f)
+            ) {
+
+
+                if (isSearching) {
+                    CustomSearchBar(
+                        value = searchText,
+                        onValueChange = { searchText=it },
+                        placeHolder = "Search",
+                        onSearchClose = {
+                            isSearching = !isSearching
+                            searchText=""
+                        }
+                    )
+                } else {
+
+                    Text(
+                        text = "Tasks",
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight(700),
+                        color = Color.LightGray
+
+                    )
+                }
+            }
 
             Row (
                 modifier = Modifier
                     .wrapContentHeight()
-                    .wrapContentWidth(),
-                verticalAlignment = Alignment.Top
+                    .wrapContentWidth(Alignment.End),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.End
             ){
-                IconButton(
-                    onClick = {TODO("Impelemetn Search Task")}
-                ){
-                    Image(
-                        modifier = Modifier
-                            .size(28.dp),
-                        imageVector =Icons.Default.Search,
-                        contentDescription = "Search Task",
-                        colorFilter = ColorFilter.tint(color = Color.LightGray)
-                    )
+
+
+
+
+                if (!isSearching) {
+
+
+                    IconButton(
+                        onClick = {
+                            isSearching = !isSearching
+                        }
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .size(28.dp),
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search Task",
+                            colorFilter = ColorFilter.tint(color = Color.LightGray)
+                        )
+                    }
                 }
+
 
                 Spacer(modifier = Modifier.width(5.dp))
 

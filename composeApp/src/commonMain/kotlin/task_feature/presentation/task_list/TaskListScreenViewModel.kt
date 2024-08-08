@@ -36,6 +36,8 @@ class TaskListScreenViewModel(
 
     init {
 
+
+
         viewModelScope.launch {
 
             dataStoreRepositoryImpl.getLoggedInUserId().collect{ id->
@@ -79,6 +81,30 @@ class TaskListScreenViewModel(
 
     }
 
+
+    private fun currentOrder(){
+
+
+    }
+
+
+   private fun levenshtein(a: String, b: String): Int {
+        val dp = Array(a.length + 1) { IntArray(b.length + 1) }
+        for (i in 0..a.length) {
+            for (j in 0..b.length) {
+                dp[i][j] = when {
+                    i == 0 -> j
+                    j == 0 -> i
+                    else -> minOf(
+                        dp[i - 1][j] + 1,
+                        dp[i][j - 1] + 1,
+                        dp[i - 1][j - 1] + if (a[i - 1] == b[j - 1]) 0 else 1
+                    )
+                }
+            }
+        }
+        return dp[a.length][b.length]
+    }
 
 
     fun onEvent(event: TaskListScreenEvent){
@@ -126,7 +152,20 @@ class TaskListScreenViewModel(
                 )
 
             }
-            is TaskListScreenEvent.OnSearchTextEntered -> TODO()
+            is TaskListScreenEvent.OnSearchTextEntered -> {
+
+
+                val sorted =tasks.sortBy {
+
+                   val n= levenshtein(it.title,event.text)
+                    println("${it.title} $n")
+                    n
+                }
+                println("---------------------------")
+
+                competedTask=tasks.filter { it.status }
+                inCompetedTask=tasks.filter { !it.status }
+            }
             is TaskListScreenEvent.OnSearchedButtonClicked -> TODO()
 
             is TaskListScreenEvent.OnTaskStatusChanged -> {

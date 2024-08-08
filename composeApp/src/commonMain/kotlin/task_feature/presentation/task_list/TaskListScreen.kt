@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.safeGesturesPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -60,26 +62,31 @@ fun TaskListScreen(
     Scaffold(
         modifier = modifier
             .background(Color(0xFF27323A))
+            .safeDrawingPadding()
             .padding(top = listInnerPadding),
 
-        topBar = { TaskListTopBar(
-            innerPadding = listInnerPadding,
-            onAscendingButtonClicked = {viewModel.onEvent(TaskListScreenEvent.OnAscendingButtonClicked)},
-            onDescendingButtonClicked = {viewModel.onEvent(TaskListScreenEvent.OnDescendingButtonClicked)},
-            onLogOut = { enableLogOutButton ->
-                viewModel.onEvent(
-                    TaskListScreenEvent.OnLogOut{
+        topBar = {
 
-                        enableLogOutButton()
-                        navController.navigate(Screen.FlashScreen.route){
-                            popUpTo(Screen.FlashScreen.route){
-                                inclusive=true
+            TaskListTopBar(
+                    innerPadding = listInnerPadding,
+                    onAscendingButtonClicked = {viewModel.onEvent(TaskListScreenEvent.OnAscendingButtonClicked)},
+                    onDescendingButtonClicked = {viewModel.onEvent(TaskListScreenEvent.OnDescendingButtonClicked)},
+                    onLogOut = { enableLogOutButton ->
+                        viewModel.onEvent(
+                            TaskListScreenEvent.OnLogOut{
+
+                                enableLogOutButton()
+                                navController.navigate(Screen.FlashScreen.route){
+                                    popUpTo(Screen.FlashScreen.route){
+                                        inclusive=true
+                                    }
+                                }
                             }
-                        }
-                    }
-                )
-            }
-        ) },
+                        )
+                    },
+                    onSearchTextEntered = {viewModel.onEvent(TaskListScreenEvent.OnSearchTextEntered(it))}
+            )
+        },
         backgroundColor = Color(0xFF27323A),
         floatingActionButton = {
 
