@@ -25,12 +25,24 @@ Compose Multiplatform Task Manager is an application targeting Android and deskt
 
 ### Android
 
-![Android Screenshot 1](images/android/add_task_android.png)
-![Android Screenshot 2](images/android/add_task_android_2.png)
-![Android Screenshot 2](images/android/sign_in_android.png)
-![Android Screenshot 2](images/android/sign_up_android.png)
-![Android Screenshot 2](images/android/task_list_2.png)
-![Android Screenshot 2](images/android/task_list_android_1.png)
+<img src="images/android/add_task_android.png" width="600" alt="Android Screenshot 1">
+<img src="images/android/add_task_android_2.png" width="300" alt="Android Screenshot 1">
+<img src="images/android/sign_in_android.png" width="300" alt="Android Screenshot 1">
+<img src="images/android/sign_up_android.png" width="300" alt="Android Screenshot 1">
+<img src="images/android/task_list_2.png" width="300" alt="Android Screenshot 1">
+<img src="images/android/task_list_android_1.png" width="300" alt="Android Screenshot 1">
+
+[//]: # (![Android Screenshot 1]&#40;images/android/add_task_android.png&#41;)
+
+[//]: # (![Android Screenshot 2]&#40;images/android/add_task_android_2.png&#41;)
+
+[//]: # (![Android Screenshot 2]&#40;images/android/sign_in_android.png&#41;)
+
+[//]: # (![Android Screenshot 2]&#40;images/android/sign_up_android.png&#41;)
+
+[//]: # (![Android Screenshot 2]&#40;images/android/task_list_2.png&#41;)
+
+[//]: # (![Android Screenshot 2]&#40;images/android/task_list_android_1.png&#41;)
 
 ### Desktop
 
