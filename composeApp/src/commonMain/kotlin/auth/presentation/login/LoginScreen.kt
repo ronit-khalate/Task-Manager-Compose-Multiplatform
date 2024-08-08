@@ -62,7 +62,7 @@ fun LoginScreen(
 
 
     Scaffold(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
         ,
         backgroundColor = Color(0xFF27323A),

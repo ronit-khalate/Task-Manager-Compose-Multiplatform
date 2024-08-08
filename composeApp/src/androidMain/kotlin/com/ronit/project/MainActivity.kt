@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
 
            
 
-            NavHost(navController =navController , startDestination = Screen.FlashScreen.route ,){
+            NavHost(navController =navController , startDestination = Screen.FlashScreen.route ){
                 
                 composable(route = Screen.FlashScreen.route){
                     

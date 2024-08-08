@@ -1,7 +1,12 @@
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.navigation.compose.NavHost
@@ -36,7 +41,7 @@ fun main() = application {
 
         ){
             val navController = rememberNavController()
-            NavHost(navController =navController , startDestination = Screen.FlashScreen.route ,){
+            NavHost(navController =navController , startDestination = Screen.FlashScreen.route){
 
                 composable(route = Screen.FlashScreen.route){
 
@@ -45,18 +50,61 @@ fun main() = application {
 
                 composable(route = Screen.LoginScreen.route){
 
-                    LoginScreen(navController = navController)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color(0xFF27323A))
+                    ) {
+
+                        Column (
+                            modifier = Modifier
+                                .weight(0.3f)
+                        ){
+
+                        }
+                        LoginScreen(
+                            modifier = Modifier
+                                .weight(0.6f),
+                            navController = navController
+                        )
+
+                        Column (
+                            modifier = Modifier
+                                .weight(0.3f)
+                        ){}
+
+                    }
                 }
 
                 composable(route= Screen.RegistrationScreen.route){
 
-                    RegistrationScreen(navController = navController)
-                }
 
-                composable(
-                    route = Screen.AddTaskScreen.route,
-                    arguments = Screen.AddTaskScreen.argument
-                ){
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color(0xFF27323A))
+                    ) {
+
+                        Column (
+                            modifier = Modifier
+                                .weight(0.3f)
+                        ){
+
+                        }
+
+                        RegistrationScreen(
+                            modifier = Modifier
+                                .weight(0.6f),
+                            navController = navController
+                        )
+
+                        Column (
+                            modifier = Modifier
+                                .weight(0.3f)
+                        ){}
+
+                    }
 
 
                 }
