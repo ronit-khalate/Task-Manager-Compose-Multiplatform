@@ -31,11 +31,11 @@
 
 ### Android
 
-<img src="images/android/add_task_android.png" width="150" height="150" alt="Add Task"/> <img src="images/android/add_task_android_2.png" width="150" height="150" alt="Add Task Details"/> <img src="images/android/sign_in_android.png" width="150" height="150" alt="Sign In"/> <img src="images/android/sign_up_android.png" width="150" height="150" alt="Sign Up"/> <img src="images/android/task_list_2.png" width="150" height="150" alt="Task List View 1"/> <img src="images/android/task_list_android_1.png" width="150" height="150" alt="Task List View 2"/>
+<img src="images/android/add_task_android.png" width="150"  alt="Add Task"/> <img src="images/android/add_task_android_2.png" width="150"  alt="Add Task Details"/> <img src="images/android/sign_in_android.png" width="150"  alt="Sign In"/> <img src="images/android/sign_up_android.png" width="150" alt="Sign Up"/> <img src="images/android/task_list_2.png" width="150" alt="Task List View 1"/> <img src="images/android/task_list_android_1.png" width="150"  alt="Task List View 2"/>
 
 ### Desktop
 
-<img src="images/desktop/home_page_desktop_1.png" width="150" height="150" alt="Desktop Home 1"/> <img src="images/desktop/home_page_desktop_2.png" width="150" height="150" alt="Desktop Home 2"/> <img src="images/desktop/home_page_desktop_3.png" width="150" height="150" alt="Desktop Home 3"/> <img src="images/desktop/login_desktop.png" width="150" height="150" alt="Desktop Login"/> <img src="images/desktop/sign_up_desktop.png" width="150" height="150" alt="Desktop Sign Up"/>
+<img src="images/desktop/home_page_desktop_1.png" width="600" alt="Desktop Home 1"/> <img src="images/desktop/home_page_desktop_2.png" width="600" alt="Desktop Home 2"/> <img src="images/desktop/home_page_desktop_3.png"  width="600" alt="Desktop Home 3"/> <img src="images/desktop/login_desktop.png" width="600"  alt="Desktop Login"/> <img src="images/desktop/sign_up_desktop.png"  width="600" alt="Desktop Sign Up"/>
 
 ## Getting Started
 
