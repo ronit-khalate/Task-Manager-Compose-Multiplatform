@@ -1,8 +1,8 @@
-# ZTaskManager - Compose Multiplatform
+# TaskManager - Compose Multiplatform
 
 ## Overview
 
-**ZTaskManager** is a modern task management application built using **Compose Multiplatform**, targeting both **Android** and **Desktop** (JVM) platforms. It provides a seamless experience for users to manage their daily tasks with features like user authentication, task persistence, and an intuitive UI.
+**TaskManager** is a modern task management application built using **Compose Multiplatform**, targeting both **Android** and **Desktop** (JVM) platforms. It provides a seamless experience for users to manage their daily tasks with features like user authentication, task persistence, and an intuitive UI.
 
 ## Features
 
